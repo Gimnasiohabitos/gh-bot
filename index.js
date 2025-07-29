@@ -33,26 +33,8 @@ client.on('qr', qr => {
 client.on('ready', () => {
     console.log('✅ Bot conectado');
 
-    // 🕔 Rutina PM (Domingo a Viernes)
-    cron.schedule('45 17 * * *', async () => {
-        const today = new Date().getDay(); // 0 = domingo, 6 = sábado
-        if (today !== 6) {
-            const message = `*GH Rutina PM | Lunes a Viernes*
-🌝 Zoom (15'm)
-👉 Link PM: https://shorturl.at/c2YkU
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠6:00 PM
-
-Respira, Cierra Jornada y Planea tu día! 
-¡Iniciamos puntual! ❤️📈
-`;
-            await sendGroupMessage(GROUP_NAME, message);
-        }
-    });
-
     // 🌄 Rutina AM (Lunes a Viernes)
-    cron.schedule('55 04 * * *', async () => {
+    cron.schedule('45 04 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
             const message = `*GH Rutina AM | Lunes a Viernes*
@@ -72,6 +54,8 @@ Respira, Cierra Jornada y Planea tu día!
 
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // 📋 Reporte Diario (lunes a viernes)
@@ -81,17 +65,17 @@ Respira, Cierra Jornada y Planea tu día!
             const message = `📈 *Reporte Diario de Asistencia*
 👉 https://shorturl.at/rAgaw
 
-
 ☑️ Aviso de Inasistencia 
 🥶(Conserva tu Racha)🔥  
 👉 https://whatsform.com/O-72jC
 
 👩‍💻Formulario Soporte GH 
-👉 [Link Formulario Soporte] 🚧
-`;
+👉 [Link Formulario Soporte] 🚧`;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // LUNES - Invitación “Mindset Mondays & Community Sessions”
@@ -108,17 +92,18 @@ Duración: 45 minutos máx.
 
 🫶Compartir y conectar en comunidad 
 👂Escuchar y construir mejoras 
-🧑‍🔧Aclarar dudas e inquietudes 
-`;
+🧑‍🔧Aclarar dudas e inquietudes `;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // Aviso - Invitación “Mindset Mondays & Community Sessions”
-    cron.schedule('01 10 * * *', async () => {
+    cron.schedule('45 18 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today >= 1 && today <= 5) {
+        if (today === 1) {
             const message = `*Mindset Mondays & Community*
 👉 Link Session: https://shorturl.at/Iu5aZ
 
@@ -126,12 +111,34 @@ Duración: 45 minutos máx.
 •⁠  ⁠7:00 PM
 
 ⏳Sala de Espera → 5’ min. antes
-⏱️ ¡Inicio puntual! :00 
-`;
+⏱️ ¡Inicio puntual! :00 `;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
+
+
+    // 🕔 Rutina PM (Lunes a Viernes)
+    cron.schedule('45 17 * * *', async () => {
+        const today = new Date().getDay(); // 0 = domingo, 6 = sábado
+        if (today !== 6) {
+            const message = `*GH Rutina PM | Lunes a Viernes*
+🌝 Zoom (15'm)
+👉 Link PM: https://shorturl.at/c2YkU
+
+🌎 Zona horaria: GMT-5 🇨🇴 
+•⁠  ⁠6:00 PM
+
+Respira, Cierra Jornada y Planea tu día! 
+¡Iniciamos puntual! ❤️📈`;
+            await sendGroupMessage(GROUP_NAME, message);
+        }
+    }, {
+        timezone: "America/Bogota"
+    });
+
 
 
     // Despedida FDS (viernes)
@@ -147,6 +154,8 @@ Duración: 45 minutos máx.
 👉 Link AM: https://shorturl.at/sBq88`;
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // Rutina AM (sabados y domingos)
@@ -164,6 +173,8 @@ Duración: 45 minutos máx.
 ⏱️ ¡Inicio puntual! :00`;
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // Recordatorio inicio de semana (Domingos)
@@ -179,6 +190,8 @@ Duración: 45 minutos máx.
 ⏱️ Iniciamos puntual! ❤️📈`;
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
 
     // Recordatorio inicio de semana (Domingos)
@@ -192,12 +205,15 @@ Duración: 45 minutos máx.
 👉 https://whatsform.com/O-72jC`;
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "America/Bogota"
     });
     //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('00 01 * * *', async () => {
+    cron.schedule('53 17 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
-            const message = `*GH Rutina AM | Lunes a Viernes*
+            const message = `esto es una prueba con el horario de espana 
+            *GH Rutina AM | Lunes a Viernes*
 🌞 Zoom (35'm)
 👉 https://shorturl.at/fTPwt
 
@@ -212,8 +228,12 @@ Duración: 45 minutos máx.
             const GROUP_NAME = "Europa | Gimnasio de Hábitos";
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "Europe/Madrid"
     });
-    cron.schedule('00 03 * * *', async () => {
+
+    ///Reporte diario 10:00 Am Espana
+    cron.schedule('00 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
             const message = `*📈 Reporte Diario de Asistencia*
@@ -229,6 +249,8 @@ Duración: 45 minutos máx.
             const GROUP_NAME = "Europa | Gimnasio de Hábitos";
             await sendGroupMessage(GROUP_NAME, message);
         }
+    }, {
+        timezone: "Europe/Madrid"
     });
 
 
