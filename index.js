@@ -10,6 +10,7 @@ const client = new Client({
     }
 });
 
+
 const GROUP_NAME = 'América | Gimnasio de Hábitos';
 
 const sendGroupMessage = async (chatName, message) => {
@@ -36,15 +37,16 @@ client.on('ready', () => {
     cron.schedule('45 17 * * *', async () => {
         const today = new Date().getDay(); // 0 = domingo, 6 = sábado
         if (today !== 6) {
-            const message = `*GH Rutina PM | Domingo a Viernes*
+            const message = `*GH Rutina PM | Lunes a Viernes*
 🌝 Zoom (15'm)
-👉 https://shorturl.at/fTPwt
+👉 Link PM: https://shorturl.at/c2YkU
 
 🌎 Zona horaria: GMT-5 🇨🇴 
 •⁠  ⁠6:00 PM
 
-Respira y planea tu día! 
-¡Iniciamos puntual! ❤️📈`;
+Respira, Cierra Jornada y Planea tu día! 
+¡Iniciamos puntual! ❤️📈
+`;
             await sendGroupMessage(GROUP_NAME, message);
         }
     });
@@ -55,19 +57,18 @@ Respira y planea tu día!
         if (today >= 1 && today <= 5) {
             const message = `*GH Rutina AM | Lunes a Viernes*
 🌞 Zoom (35'm)
-👉 https://shorturl.at/fTPwt
+👉 Link AM: https://shorturl.at/sBq88 
 
 🌎 Zona horaria: GMT-5 🇨🇴 
-⏳Sala de espera y bienvenida → 5’ min. antes
+•⁠  ⁠5:00 AM 
+•⁠  ⁠6:00 AM 
+•⁠  ⁠7:00 AM 
+•⁠  ⁠8:00 AM 
+•⁠  ⁠9:00 AM 
+
+⏳Sala de Bienvenida → 5’ min. antes
 ⏱️ ¡Inicio puntual! :00 
-
-•⁠  ⁠5:00 AM
-•⁠  ⁠6:00 AM
-•⁠  ⁠7:00 AM
-•⁠  ⁠8:00 AM
-•⁠  ⁠9:00 AM
-
-🫶 Recuerda saludar y despedirte en cada sesión 👋`;
+🫶 _Recuerda Saludar y Despedirte en Cada Sesión_ 👋`;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
@@ -77,15 +78,17 @@ Respira y planea tu día!
     cron.schedule('00 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
-            const message = `*📈 Reporte Diario de Asistencia*
+            const message = `📈 *Reporte Diario de Asistencia*
 👉 https://shorturl.at/rAgaw
 
+
 ☑️ Aviso de Inasistencia 
-🥶(conserva tu racha) 🔥  
+🥶(Conserva tu Racha)🔥  
 👉 https://whatsform.com/O-72jC
 
-👩‍💻Soporte GH 
-👉https://shorturl.at/jDwc9`;
+👩‍💻Formulario Soporte GH 
+👉 [Link Formulario Soporte] 🚧
+`;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
@@ -95,16 +98,36 @@ Respira y planea tu día!
     cron.schedule('01 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
-            const message = `Nos vemos hoy en nuestra “Mindset Mondays & Community Sessions”
+            const message = `Nos vemos hoy Lunes! 
+*Mindset Mondays & Community*
+Duración: 45 minutos máx.
+👉 Link Session: https://shorturl.at/Iu5aZ
+
 🌎 Zona horaria: GMT-5 🇨🇴 
 •⁠  ⁠7:00 PM
-👉 Link: https://shorturl.at/fTPwt
 
-Duración: 45 minutos máx.
-Objetivos:
-- 🫶Compartir en comunidad 
-- 👂Escuchar y construir mejoras 
-- 🧑‍🔧Aclarar dudas e inquietudes`;
+🫶Compartir y conectar en comunidad 
+👂Escuchar y construir mejoras 
+🧑‍🔧Aclarar dudas e inquietudes 
+`;
+
+            await sendGroupMessage(GROUP_NAME, message);
+        }
+    });
+
+    // Aviso - Invitación “Mindset Mondays & Community Sessions”
+    cron.schedule('01 10 * * *', async () => {
+        const today = new Date().getDay(); // 1 = lunes, 5 = viernes
+        if (today >= 1 && today <= 5) {
+            const message = `*Mindset Mondays & Community*
+👉 Link Session: https://shorturl.at/Iu5aZ
+
+🌎 Zona horaria: GMT-5 🇨🇴 
+•⁠  ⁠7:00 PM
+
+⏳Sala de Espera → 5’ min. antes
+⏱️ ¡Inicio puntual! :00 
+`;
 
             await sendGroupMessage(GROUP_NAME, message);
         }
@@ -120,8 +143,8 @@ Objetivos:
 (Sin Registro)
 
 🌞 Único Horario FDS: 8:00 AM 
-👉 https://shorturl.at/fTPwt
-Zona horaria: GMT-5 🇨🇴 `;
+🌎 Zona horaria: GMT-5 🇨🇴 
+👉 Link AM: https://shorturl.at/sBq88`;
             await sendGroupMessage(GROUP_NAME, message);
         }
     });
@@ -132,13 +155,13 @@ Zona horaria: GMT-5 🇨🇴 `;
         if (today === 6 || today === 0) {
             const message = `*GH Rutina AM | FDS | Sin Registro*
 🌞 Zoom (35'm)
-👉 https://shorturl.at/fTPwt
+👉 Link AM: https://shorturl.at/sBq88
 
 🌎 Zona horaria: GMT-5 🇨🇴 
-⏳Sala de espera → 5’ min. antes
-⏱️ ¡Inicio puntual! :00 
+•⁠  ⁠8:00 AM
 
-•⁠  ⁠8:00 AM`;
+⏳Sala de espera → 5’ min. antes
+⏱️ ¡Inicio puntual! :00`;
             await sendGroupMessage(GROUP_NAME, message);
         }
     });
