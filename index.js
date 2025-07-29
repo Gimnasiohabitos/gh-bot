@@ -81,14 +81,14 @@ client.on('ready', () => {
     // LUNES - Invitación “Mindset Mondays & Community Sessions”
     cron.schedule('01 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today >= 1 && today <= 5) {
+        if (today === 1 ) {
             const message = `Nos vemos hoy Lunes! 
 *Mindset Mondays & Community*
 Duración: 45 minutos máx.
 👉 Link Session: https://shorturl.at/Iu5aZ
 
 🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠7:00 PM
+•⁠  ⁠7:00 PM.
 
 🫶Compartir y conectar en comunidad 
 👂Escuchar y construir mejoras 
