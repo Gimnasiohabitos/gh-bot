@@ -209,7 +209,7 @@ Respira, Cierra Jornada y Planea tu día!
         timezone: "America/Bogota"
     });
     //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('53 17 * * *', async () => {
+    cron.schedule('15 18 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
             const message = `esto es una prueba con el horario de espana 
