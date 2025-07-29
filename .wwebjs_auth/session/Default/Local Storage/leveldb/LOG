@@ -1,0 +1,21 @@
+2025/07/28-00:41:48.184 638c Reusing MANIFEST C:\Users\USER\OneDrive\Documentos\whatsapp-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/07/28-00:41:48.184 638c Recovering log #42
+2025/07/28-00:41:48.185 638c Reusing old log C:\Users\USER\OneDrive\Documentos\whatsapp-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/000042.log 
+2025/07/28-08:12:15.068 4b5c Level-0 table #46: started
+2025/07/28-08:12:15.084 4b5c Level-0 table #46: 13729 bytes OK
+2025/07/28-08:12:15.101 4b5c Delete type=0 #42
+2025/07/28-14:22:32.049 6858 Level-0 table #48: started
+2025/07/28-14:22:32.076 6858 Level-0 table #48: 14438 bytes OK
+2025/07/28-14:22:32.084 6858 Delete type=0 #45
+2025/07/28-22:04:58.659 4b98 Level-0 table #50: started
+2025/07/28-22:04:58.671 4b98 Level-0 table #50: 13749 bytes OK
+2025/07/28-22:04:58.677 4b98 Delete type=0 #47
+2025/07/28-22:04:58.677 4b98 Compacting 4@0 + 1@1 files
+2025/07/28-22:04:58.684 4b98 Generated table #51@0: 96 keys, 5372 bytes
+2025/07/28-22:04:58.684 4b98 Compacted 4@0 + 1@1 files => 5372 bytes
+2025/07/28-22:04:58.689 4b98 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/07/28-22:04:58.689 4b98 Delete type=2 #40
+2025/07/28-22:04:58.689 4b98 Delete type=2 #43
+2025/07/28-22:04:58.689 4b98 Delete type=2 #46
+2025/07/28-22:04:58.689 4b98 Delete type=2 #48
+2025/07/28-22:04:58.689 4b98 Delete type=2 #50
