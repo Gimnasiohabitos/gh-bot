@@ -14,24 +14,55 @@ const client = new Client({
 const GROUP_NAME = 'América | Gimnasio de Hábitos';
 
 const sendGroupMessage = async (chatName, message) => {
-    const chats = await client.getChats();
-    const group = chats.find(chat => chat.isGroup && chat.name === chatName);
+    try {
+        const chats = await client.getChats();
+        console.log(`✅ Total de chats disponibles: ${chats.length}`);
+        const group = chats.find(chat => chat.isGroup && chat.name === chatName);
 
-    if (group) {
+        if (!group) {
+            console.error(`❌ Grupo "${chatName}" no encontrado`);
+            return;
+        }
+
         await client.sendMessage(group.id._serialized, message);
-        console.log('📤 Mensaje enviado');
-    } else {
-        console.log('❌ Grupo no encontrado');
+        console.log(`📤 Mensaje enviado al grupo: ${chatName}`);
+    } catch (err) {
+        console.error(`❌ Error al enviar mensaje a ${chatName}:`, err.message);
+
+        if (err.message.includes('deprecatedSendStanzaAndReturnAck')) {
+            console.log('⚠️ Canal de envío roto. Reiniciando cliente...');
+            await client.destroy();
+            await client.initialize();
+        }
     }
 };
+
 
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
     console.log('Escanea el código QR con WhatsApp Web');
 });
 
+client.on('disconnected', (reason) => {
+    console.log(`❌ Cliente desconectado: ${reason}`);
+    client.destroy().then(() => {
+        client.initialize();
+    });
+});
+
 client.on('ready', () => {
     console.log('✅ Bot conectado');
+
+    // Prueba de que sigue vivo
+    cron.schedule('0,30 * * * *', async () => {
+    try {
+        await client.sendPresenceAvailable();
+        console.log('🔁 Heartbeat enviado (presencia disponible)');
+    } catch (e) {
+        console.error('❤️ Error en heartbeat:', e.message);
+    }
+});
+
 
     // 🌄 Rutina AM (Lunes a Viernes)
     cron.schedule('45 04 * * *', async () => {
@@ -209,7 +240,7 @@ Respira, Cierra Jornada y Planea tu día!
         timezone: "America/Bogota"
     });
     //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('45 07 * * *', async () => {
+    cron.schedule('15 13 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
             const message = `*GH Rutina AM | Lunes a Viernes*
