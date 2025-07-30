@@ -227,7 +227,7 @@ Respira, Cierra Jornada y Planea tu día!
 👉 https://shorturl.at/fTPwt
 
 🌎 Zona horaria: GMT+2 🇪🇸 
-⏳Sala de espera y bienvenida → 5’ min. antes
+⏳Sala de espera y bienvenida → 5’ min. antes.
 ⏱️ ¡Inicio puntual! :00 
 
 •⁠  ⁠8:00 AM
