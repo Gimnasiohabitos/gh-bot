@@ -218,11 +218,10 @@ Respira, Cierra Jornada y Planea tu día!
         timezone: "America/Bogota"
     });
     //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('30 12 * * *', async () => {
+    cron.schedule('45 12 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
-            const message = `
-*GH Rutina AM | Lunes a Viernes*
+            const message = `*GH Rutina AM | Lunes a Viernes*
 🌞 Zoom (35'm)
 👉 https://shorturl.at/fTPwt
 
