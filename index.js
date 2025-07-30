@@ -37,8 +37,7 @@ client.on('ready', () => {
     cron.schedule('45 04 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes , 6= sabado 0 = domingo
         if (today >= 1 && today <= 5) {
-            const message =
-                `*GH Rutina AM | Lunes a Viernes*
+            const message =`*GH Rutina AM | Lunes a Viernes*
 🌞 Zoom (35'm)
 👉 Link AM: https://shorturl.at/sBq88 
 
@@ -63,8 +62,7 @@ client.on('ready', () => {
     cron.schedule('00 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
-            const message =
-                `📈 *Reporte Diario de Asistencia*
+            const message =`📈 *Reporte Diario de Asistencia*
 👉 https://shorturl.at/rAgaw
 
 ☑️ Aviso de Inasistencia 
@@ -84,8 +82,7 @@ client.on('ready', () => {
     cron.schedule('01 10 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today === 1) {
-            const message =
-                `Nos vemos hoy Lunes! 
+            const message =`Nos vemos hoy Lunes! 
 *Mindset Mondays & Community*
 Duración: 45 minutos máx.
 👉 Link Session: https://shorturl.at/Iu5aZ
@@ -107,8 +104,7 @@ Duración: 45 minutos máx.
     cron.schedule('45 18 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today === 1) {
-            const message =
-                `*Mindset Mondays & Community*
+            const message =`*Mindset Mondays & Community*
 👉 Link Session: https://shorturl.at/Iu5aZ
 
 🌎 Zona horaria: GMT-5 🇨🇴 
@@ -128,8 +124,7 @@ Duración: 45 minutos máx.
     cron.schedule('45 17 * * *', async () => {
         const today = new Date().getDay(); // 0 = domingo, 6 = sábado
         if (today !== 6) {
-            const message =
-                `*GH Rutina PM | Lunes a Viernes*
+            const message =`*GH Rutina PM | Lunes a Viernes*
 🌝 Zoom (15'm)
 👉 Link PM: https://shorturl.at/c2YkU
 
@@ -150,8 +145,7 @@ Respira, Cierra Jornada y Planea tu día!
     cron.schedule('00 21 * * *', async () => {
         const today = new Date().getDay(); // 5 = viernes
         if (today === 5) {
-            const message =
-                `Feliz fin de semana!!
+            const message =`Feliz fin de semana!!
 *Nos vemos Sábados y Domingos* 
 (Sin Registro)
 
@@ -168,8 +162,7 @@ Respira, Cierra Jornada y Planea tu día!
     cron.schedule('45 07 * * *', async () => {
         const today = new Date().getDay(); // 5 = viernes
         if (today === 6 || today === 0) {
-            const message =
-                `*GH Rutina AM | FDS | Sin Registro*
+            const message =`*GH Rutina AM | FDS | Sin Registro*
 🌞 Zoom (35'm)
 👉 Link AM: https://shorturl.at/sBq88
 
@@ -188,8 +181,7 @@ Respira, Cierra Jornada y Planea tu día!
     cron.schedule('00 19 * * *', async () => {
         const today = new Date().getDay(); // 5 = viernes
         if (today === 0) {
-            const message =
-                `✨Feliz noche de Domingo✨
+            const message =`✨Feliz noche de Domingo✨
 👁️*Nos vemos mañana Lunes* 🌅
 
 •⁠ 5 - 6 - 7 - 8 - 9 AM
@@ -206,8 +198,7 @@ Respira, Cierra Jornada y Planea tu día!
     cron.schedule('01 19 * * *', async () => {
         const today = new Date().getDay(); // 5 = viernes
         if (today === 0) {
-            const message =
-                `Recuerda poner en tus configuraciones de Usuario en Zoom, tu Nombre y Apellido para llevar tu registro. 👩‍💻
+            const message =`Recuerda poner en tus configuraciones de Usuario en Zoom, tu Nombre y Apellido para llevar tu registro. 👩‍💻
 👉 https://zoom.us/profile
 
 ☑️ Aviso de Inasistencia (conserva tu racha) 🔥
@@ -218,7 +209,7 @@ Respira, Cierra Jornada y Planea tu día!
         timezone: "America/Bogota"
     });
     //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('45 12 * * *', async () => {
+    cron.schedule('45 07 * * *', async () => {
         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
         if (today >= 1 && today <= 5) {
             const message = `*GH Rutina AM | Lunes a Viernes*
