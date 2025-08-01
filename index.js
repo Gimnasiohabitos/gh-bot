@@ -10,13 +10,11 @@ const client = new Client({
     }
 });
 
-
-const GROUP_NAME = 'América | Gimnasio de Hábitos';
+let tareasYaIniciadas = false;
 
 const sendGroupMessage = async (chatName, message) => {
     try {
         const chats = await client.getChats();
-        console.log(`✅ Total de chats disponibles: ${chats.length}`);
         const group = chats.find(chat => chat.isGroup && chat.name === chatName);
 
         if (!group) {
@@ -28,265 +26,107 @@ const sendGroupMessage = async (chatName, message) => {
         console.log(`📤 Mensaje enviado al grupo: ${chatName}`);
     } catch (err) {
         console.error(`❌ Error al enviar mensaje a ${chatName}:`, err.message);
-
         if (err.message.includes('deprecatedSendStanzaAndReturnAck')) {
-            console.log('⚠️ Canal de envío roto. Reiniciando cliente...');
+            console.log('⚠️ Reiniciando cliente...');
             await client.destroy();
             await client.initialize();
         }
     }
 };
 
+const getDayInTimeZone = (tz) => {
+    const now = new Date().toLocaleString('en-US', { timeZone: tz });
+    return new Date(now).getDay();
+};
 
-client.on('qr', qr => {
+client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
-    console.log('Escanea el código QR con WhatsApp Web');
-});
-
-client.on('disconnected', (reason) => {
-    console.log(`❌ Cliente desconectado: ${reason}`);
-    client.destroy().then(() => {
-        client.initialize();
-    });
 });
 
 client.on('ready', () => {
     console.log('✅ Bot conectado');
 
-    // Prueba de que sigue vivo
-    cron.schedule('0,30 * * * *', async () => {
-    try {
-        await client.sendPresenceAvailable();
-        console.log('🔁 Heartbeat enviado (presencia disponible)');
-    } catch (e) {
-        console.error('❤️ Error en heartbeat:', e.message);
+    if (tareasYaIniciadas) {
+        console.log('⏭️ Tareas ya estaban activas.');
+        return;
     }
-});
+    tareasYaIniciadas = true;
 
-
-    // 🌄 Rutina AM (Lunes a Viernes)
+    // 🌄 GH América – Rutina AM (L-V)
     cron.schedule('45 04 * * *', async () => {
-        const today = new Date().getDay(); // 1 = lunes, 5 = viernes , 6= sabado 0 = domingo
-        if (today >= 1 && today <= 5) {
-            const message =`*GH Rutina AM | Lunes a Viernes*
-🌞 Zoom (35'm)
-👉 Link AM: https://shorturl.at/sBq88 
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠5:00 AM 
-•⁠  ⁠6:00 AM 
-•⁠  ⁠7:00 AM 
-•⁠  ⁠8:00 AM 
-•⁠  ⁠9:00 AM 
-
-⏳Sala de Bienvenida → 5’ min. antes
-⏱️ ¡Inicio puntual! :00 
-🫶 _Recuerda Saludar y Despedirte en Cada Sesión_ 👋`;
-
-            await sendGroupMessage(GROUP_NAME, message);
+        const day = getDayInTimeZone('America/Bogota');
+        if (day >= 1 && day <= 5) {
+            const message = `*GH Rutina AM | Lunes a Viernes*\n...`;
+            await sendGroupMessage("América | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
+    }, { timezone: 'America/Bogota' });
 
-    // 📋 Reporte Diario (lunes a viernes)
+    // 📋 Reporte Diario América (L-V)
     cron.schedule('00 10 * * *', async () => {
-        const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today >= 1 && today <= 5) {
-            const message =`📈 *Reporte Diario de Asistencia*
-👉 https://shorturl.at/rAgaw
-
-☑️ Aviso de Inasistencia 
-🥶(Conserva tu Racha)🔥  
-👉 https://whatsform.com/O-72jC
-
-👩‍💻Formulario Soporte GH 
-👉 [Link Formulario Soporte] 🚧`;
-
-            await sendGroupMessage(GROUP_NAME, message);
+        const day = getDayInTimeZone('America/Bogota');
+        if (day >= 1 && day <= 5) {
+            const message = `📈 *Reporte Diario de Asistencia*\n...`;
+            await sendGroupMessage("América | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
+    }, { timezone: 'America/Bogota' });
 
-    // LUNES - Invitación “Mindset Mondays & Community Sessions”
+    // 🧠 Mindset Mondays – lunes AM
     cron.schedule('01 10 * * *', async () => {
-        const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today === 1) {
-            const message =`Nos vemos hoy Lunes! 
-*Mindset Mondays & Community*
-Duración: 45 minutos máx.
-👉 Link Session: https://shorturl.at/Iu5aZ
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠7:00 PM.
-
-🫶Compartir y conectar en comunidad 
-👂Escuchar y construir mejoras 
-🧑‍🔧Aclarar dudas e inquietudes `;
-
-            await sendGroupMessage(GROUP_NAME, message);
+        const day = getDayInTimeZone('America/Bogota');
+        if (day === 1) {
+            const message = `Nos vemos hoy Lunes! *Mindset Mondays...*`;
+            await sendGroupMessage("América | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
+    }, { timezone: 'America/Bogota' });
 
-    // Aviso - Invitación “Mindset Mondays & Community Sessions”
-    cron.schedule('45 18 * * *', async () => {
-        const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today === 1) {
-            const message =`*Mindset Mondays & Community*
-👉 Link Session: https://shorturl.at/Iu5aZ
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠7:00 PM
-
-⏳Sala de Espera → 5’ min. antes
-⏱️ ¡Inicio puntual! :00 `;
-
-            await sendGroupMessage(GROUP_NAME, message);
-        }
-    }, {
-        timezone: "America/Bogota"
-    });
-
-
-    // 🕔 Rutina PM (Lunes a Viernes)
+    // 🕔 Rutina PM (L-V)
     cron.schedule('45 17 * * *', async () => {
-        const today = new Date().getDay(); // 0 = domingo, 6 = sábado
-        if (today !== 6) {
-            const message =`*GH Rutina PM | Lunes a Viernes*
-🌝 Zoom (15'm)
-👉 Link PM: https://shorturl.at/c2YkU
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠6:00 PM
-
-Respira, Cierra Jornada y Planea tu día! 
-¡Iniciamos puntual! ❤️📈`;
-            await sendGroupMessage(GROUP_NAME, message);
+        const day = getDayInTimeZone('America/Bogota');
+        if (day >= 1 && day <= 5) {
+            const message = `*GH Rutina PM | Lunes a Viernes*\n...`;
+            await sendGroupMessage("América | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
+    }, { timezone: 'America/Bogota' });
 
+    // 🎉 Despedida FDS (viernes)
+    cron.schedule('00 21 * * 5', async () => {
+        const message = `Feliz fin de semana!!\n...`;
+        await sendGroupMessage("América | Gimnasio de Hábitos", message);
+    }, { timezone: 'America/Bogota' });
 
-
-    // Despedida FDS (viernes)
-    cron.schedule('00 21 * * *', async () => {
-        const today = new Date().getDay(); // 5 = viernes
-        if (today === 5) {
-            const message =`Feliz fin de semana!!
-*Nos vemos Sábados y Domingos* 
-(Sin Registro)
-
-🌞 Único Horario FDS: 8:00 AM 
-🌎 Zona horaria: GMT-5 🇨🇴 
-👉 Link AM: https://shorturl.at/sBq88`;
-            await sendGroupMessage(GROUP_NAME, message);
-        }
-    }, {
-        timezone: "America/Bogota"
-    });
-
-    // Rutina AM (sabados y domingos)
+    // 🧘‍♂️ Rutina FDS (sábado y domingo)
     cron.schedule('45 07 * * *', async () => {
-        const today = new Date().getDay(); // 5 = viernes
-        if (today === 6 || today === 0) {
-            const message =`*GH Rutina AM | FDS | Sin Registro*
-🌞 Zoom (35'm)
-👉 Link AM: https://shorturl.at/sBq88
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠8:00 AM
-
-⏳Sala de espera → 5’ min. antes
-⏱️ ¡Inicio puntual! :00`;
-            await sendGroupMessage(GROUP_NAME, message);
+        const day = getDayInTimeZone('America/Bogota');
+        if (day === 6 || day === 0) {
+            const message = `*GH Rutina AM | FDS | Sin Registro*\n...`;
+            await sendGroupMessage("América | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
+    }, { timezone: 'America/Bogota' });
 
-    // Recordatorio inicio de semana (Domingos)
-    cron.schedule('00 19 * * *', async () => {
-        const today = new Date().getDay(); // 5 = viernes
-        if (today === 0) {
-            const message =`✨Feliz noche de Domingo✨
-👁️*Nos vemos mañana Lunes* 🌅
+    // ☀️ Recordatorio domingo noche
+    cron.schedule('00 19 * * 0', async () => {
+        const message = `✨Feliz noche de Domingo✨\n...`;
+        await sendGroupMessage("América | Gimnasio de Hábitos", message);
+    }, { timezone: 'America/Bogota' });
 
-•⁠ 5 - 6 - 7 - 8 - 9 AM
+    cron.schedule('01 19 * * 0', async () => {
+        const message = `Recuerda poner en Zoom tu nombre y apellido 👩‍💻\n...`;
+        await sendGroupMessage("América | Gimnasio de Hábitos", message);
+    }, { timezone: 'America/Bogota' });
 
-⏳ Sala de espera → 5’ min. antes
-⏱️ Iniciamos puntual! ❤️📈`;
-            await sendGroupMessage(GROUP_NAME, message);
+    ///////////////////////// EUROPA /////////////////////////
+    cron.schedule('45 07 * * *', async () => {
+        const day = getDayInTimeZone('Europe/Madrid');
+        if (day >= 1 && day <= 5) {
+            const message = `*GH Rutina AM | Lunes a Viernes*\n🇪🇸 Europa\n...`;
+            await sendGroupMessage("Europa | Gimnasio de Hábitos", message);
         }
-    }, {
-        timezone: "America/Bogota"
-    });
-
-    // Recordatorio inicio de semana (Domingos)
-    cron.schedule('01 19 * * *', async () => {
-        const today = new Date().getDay(); // 5 = viernes
-        if (today === 0) {
-            const message =`Recuerda poner en tus configuraciones de Usuario en Zoom, tu Nombre y Apellido para llevar tu registro. 👩‍💻
-👉 https://zoom.us/profile
-
-☑️ Aviso de Inasistencia (conserva tu racha) 🔥
-👉 https://whatsform.com/O-72jC`;
-            await sendGroupMessage(GROUP_NAME, message);
-        }
-    }, {
-        timezone: "America/Bogota"
-    });
-    //////////////////////////////////ESPANA///////////////////////////////////////////
-    cron.schedule('15 13 * * *', async () => {
-        const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-        if (today >= 1 && today <= 5) {
-            const message = `*GH Rutina AM | Lunes a Viernes*
-🌞 Zoom (35'm)
-👉 https://shorturl.at/fTPwt
-
-🌎 Zona horaria: GMT+2 🇪🇸 
-⏳Sala de espera y bienvenida → 5’ min. antes.
-⏱️ ¡Inicio puntual! :00 
-
-•⁠  ⁠8:00 AM
-
-🫶 Recuerda saludar y despedirte en cada sesión 👋`;
-
-            const GROUP_NAME = "Europa | Gimnasio de Hábitos";
-            await sendGroupMessage(GROUP_NAME, message);
-        }
-    }, {
-        timezone: "Europe/Madrid"
-    });
-
-    ///Reporte diario 10:00 Am Espana
-    /* cron.schedule('00 10 * * *', async () => {
-         const today = new Date().getDay(); // 1 = lunes, 5 = viernes
-         if (today >= 1 && today <= 5) {
-             const message = 
- `*📈 Reporte Diario de Asistencia*
- 👉 https://shorturl.at/rAgaw
- 
- ☑️ Aviso de Inasistencia 
- 🥶(conserva tu racha) 🔥  
- 👉 https://whatsform.com/O-72jC
- 
- 👩‍💻Soporte GH 
- 👉https://shorturl.at/jDwc9`;
- 
-             const GROUP_NAME = "Europa | Gimnasio de Hábitos";
-             await sendGroupMessage(GROUP_NAME, message);
-         }
-     }, {
-         timezone: "Europe/Madrid"
-     });
- 
- */
-
+    }, { timezone: 'Europe/Madrid' });
 });
 
+client.on('disconnected', (reason) => {
+    console.log(`❌ Cliente desconectado: ${reason}`);
+    client.destroy().then(() => client.initialize());
+});
 
 client.initialize();
