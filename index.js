@@ -196,10 +196,19 @@ Respira, Cierra Jornada y Planea tu día!
     }, { timezone: 'America/Bogota' });
 
     ///////////////////////// EUROPA /////////////////////////
-    cron.schedule('45 07 * * *', async () => {
+    cron.schedule('50 23 * * *', async () => {
         const day = getDayInTimeZone('Europe/Madrid');
         if (day >= 1 && day <= 5) {
-            const message = `*GH Rutina AM | Lunes a Viernes*\n🇪🇸 Europa\n...`;
+            const message = `*GH Rutina AM | Lunes a Viernes*
+🌞 Zoom (35'm)
+👉 Link AM: https://shorturl.at/sBq88 
+
+🌎 Zona horaria: GMT+2 🇪🇸 
+•⁠  ⁠8:00 AM 
+
+⏳Sala de Bienvenida → 5’ min. antes
+⏱️ ¡Inicio puntual! :00 
+🫶 _Recuerda Saludar y Despedirte en Cada Sesión_ 👋`;
             await sendGroupMessage("Europa | Gimnasio de Hábitos", message);
             tareasYaIniciadas = true;
         }
