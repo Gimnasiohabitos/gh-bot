@@ -193,7 +193,8 @@ Respira, Cierra Jornada y Planea tu día!
     cron.schedule('45 07 * * *', async () => {
         const day = getDayInTimeZone('Europe/Madrid');
         if (day >= 1 && day <= 5) {
-            const message = `*GH Rutina AM | Lunes a Viernes*
+            const message = `Es la hora del automata 
+*GH Rutina AM | Lunes a Viernes*
 🌞 Zoom (35'm)
 👉 Link AM: https://shorturl.at/sBq88 
 
