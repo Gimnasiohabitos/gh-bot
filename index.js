@@ -41,9 +41,20 @@ const getDayInTimeZone = (tz) => {
     return new Date(now).getDay();
 };
 
+const QRCode = require('qrcode');
+// ...
 client.on('qr', (qr) => {
-    qrcode.generate(qr, { small: true });
+  QRCode.toFile('qr.png', qr, {
+    color: {
+      dark: '#000',  // Black dots
+      light: '#FFF' // White background
+    }
+  }, function (err) {
+    if (err) throw err;
+    console.log('✅ QR guardado como qr.png');
+  });
 });
+
 
 client.on('ready', () => {
     console.log('✅ Bot conectado');
