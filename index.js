@@ -190,7 +190,7 @@ Respira, Cierra Jornada y Planea tu día!
     }, { timezone: 'America/Bogota' });
 
     ///////////////////////// EUROPA /////////////////////////
-    cron.schedule('10 06 * * *', async () => {
+    cron.schedule('45 07 * * *', async () => {
         const day = getDayInTimeZone('Europe/Madrid');
         if (day >= 1 && day <= 5) {
             const message = `*GH Rutina AM | Lunes a Viernes*
