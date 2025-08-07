@@ -1,21 +1,15 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const cron = require('node-cron');
-
-new LocalAuth({ clientId: 'gh-bot-prod' })
 require('dotenv').config();
 
-
 const client = new Client({
-    authStrategy: new LocalAuth({
-        clientId: process.env.WHATSAPP_SESSION || 'default'
-    }),
+    authStrategy: new LocalAuth({ clientId: 'gh-bot-prod' }), // o solo 'default' si lo prefieres
     puppeteer: {
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
-
 
 let tareasYaIniciadas = false;
 
