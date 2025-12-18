@@ -1,229 +1,140 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const cron = require('node-cron');
-require('dotenv').config();
+
+const GROUP_NAME = '🌎 | Gimnasio de Hábitos';
 
 const client = new Client({
-    authStrategy: new LocalAuth({ clientId: 'gh-bot-prod' }), // o solo 'default' si lo prefieres
+    authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
 
-let tareasYaIniciadas = false;
-
-const sendGroupMessage = async (chatName, message) => {
-    try {
-        const chats = await client.getChats();
-        const group = chats.find(chat => chat.isGroup && chat.name === chatName);
-
-        if (!group) {
-            console.error(`❌ Grupo "${chatName}" no encontrado`);
-            return;
-        }
-
-        await client.sendMessage(group.id._serialized, message);
-        console.log(`📤 Mensaje enviado al grupo: ${chatName}`);
-    } catch (err) {
-        console.error(`❌ Error al enviar mensaje a ${chatName}:`, err.message);
-        if (err.message.includes('deprecatedSendStanzaAndReturnAck')) {
-            console.log('⚠️ Reiniciando cliente...');
-            await client.destroy();
-            await client.initialize();
-            tareasYaIniciadas = false;
-        }
-    }
-};
-
-const getDayInTimeZone = (tz) => {
-    const now = new Date().toLocaleString('en-US', { timeZone: tz });
-    return new Date(now).getDay();
-};
-
-const QRCode = require('qrcode');
-// ...
-client.on('qr', (qr) => {
-  QRCode.toFile('qr.png', qr, {
-    color: {
-      dark: '#000',  // Black dots
-      light: '#FFF' // White background
-    }
-  }, function (err) {
-    if (err) throw err;
-    console.log('✅ QR guardado como qr.png');
-  });
+client.on('qr', qr => {
+    qrcode.generate(qr, { small: true });
+    console.log('📲 Escanea el QR con WhatsApp');
 });
 
-
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('✅ Bot conectado');
 
-    if (tareasYaIniciadas) {
-        console.log('⏭️ Tareas ya estaban activas.');
+    const chats = await client.getChats();
+    const group = chats.find(chat => chat.isGroup && chat.name === GROUP_NAME);
+
+    if (!group) {
+        console.log('❌ Grupo no encontrado');
         return;
     }
 
-    // 🌄 GH América – Rutina AM (L-V)
-    cron.schedule('45 04 * * *', async () => {
-        const day = getDayInTimeZone('America/Bogota');
+    const send = async (message) => {
+        await client.sendMessage(group.id._serialized, message);
+        console.log(`📤 Mensaje enviado (${new Date().toLocaleString('es-CO')})`);
+    };
+
+    // 🌄 Rutina AM (lunes a viernes) - 3:45 AM
+    cron.schedule('45 03 * * *', async () => {
+        const day = new Date().getDay();
         if (day >= 1 && day <= 5) {
-            const message = `*GH Rutina AM | Lunes a Viernes*
-🌞 Zoom (35'm)
-👉 Link AM: https://shorturl.at/sBq88 
+            await send(`*GH Rutina AM | Lunes a Viernes*
+🌞 ZOOM (35'm)
+👉 https://shorturl.at/drCBU
+👉 ID: 282 437 3527
+👨‍💻 Activa y enfoca tu cámara 
+🙏 Zoom User: Nombre Apellido
 
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠5:00 AM 
-•⁠  ⁠6:00 AM 
-•⁠  ⁠7:00 AM 
-•⁠  ⁠8:00 AM 
-•⁠  ⁠9:00 AM 
+🌎 *GH | 24h* 👀 
+•⁠ Sesiones cada hora _:00⁠
+•⁠ 4-5-6-7-8-9… 24h
 
-⏳Sala de Bienvenida → 5’ min. antes
 ⏱️ ¡Inicio puntual! :00 
-🫶 _Recuerda Saludar y Despedirte en Cada Sesión_ 👋`;
-            await sendGroupMessage("América | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
-        }
-    }, { timezone: 'America/Bogota' });
+⏳Sala de Bienvenida → 5’ min. antes
+👋 _Recuerda Saludar y Despedirte en cada sesión_
 
-    // 📋 Reporte Diario América (L-V)
-    cron.schedule('00 10 * * *', async () => {
-        const day = getDayInTimeZone('America/Bogota');
-        if (day >= 1 && day <= 5) {
-            const message = `📈 *Reporte Diario de Asistencia*
-👉 https://shorturl.at/rAgaw
-
-
-☑️ Aviso de Inasistencia 
+☑️ *Avisa tu Inasistencia*
 🥶(Conserva tu Racha)🔥  
-👉 https://whatsform.com/O-72jC
-
-👩‍💻Formulario Soporte GH 
-👉 [Link Formulario Soporte] 🚧`;
-            await sendGroupMessage("América | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
+👉 https://whatsform.com/O-72jC`);
         }
-    }, { timezone: 'America/Bogota' });
+    });
 
-    // 🧠 Mindset Mondays – lunes AM
-    cron.schedule('01 10 * * *', async () => {
-        const day = getDayInTimeZone('America/Bogota');
-        if (day === 1) {
-            const message = `Nos vemos hoy Lunes! 
-*Mindset Mondays & Community*
-Duración: 45 minutos máx.
-👉 Link Session: https://shorturl.at/Iu5aZ
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠7:00 PM
-
-🫶Compartir y conectar en comunidad 
-👂Escuchar y construir mejoras 
-🧑‍🔧Aclarar dudas e inquietudes`;
-            await sendGroupMessage("América | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
-        }
-    }, { timezone: 'America/Bogota' });
-
-    // 🕔 Rutina PM (L-V)
-    cron.schedule('45 17 * * *', async () => {
-        const day = getDayInTimeZone('America/Bogota');
+    // 📋 Reporte diario (lunes a viernes) - 1:00 PM
+    cron.schedule('00 13 * * *', async () => {
+        const day = new Date().getDay();
         if (day >= 1 && day <= 5) {
-            const message = `*GH Rutina PM | Lunes a Viernes*
-🌝 Zoom (15'm)
-👉 Link PM: https://shorturl.at/c2YkU
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠6:00 PM
-
-Respira, Cierra Jornada y Planea tu día! 
-¡Iniciamos puntual! ❤️📈`;
-            await sendGroupMessage("América | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
+            await send(`📈 *Reporte Diario de Asistencia*
+👉 HabitTracker: https://shorturl.at/rAgaw`);
         }
-    }, { timezone: 'America/Bogota' });
+    });
 
-    // 🎉 Despedida FDS (viernes)
-    cron.schedule('00 21 * * 5', async () => {
-        const message = `Feliz fin de semana!!
+    // 🔥 Viernes - Compartir Valor - 2:00 PM
+    cron.schedule('00 14 * * *', async () => {
+        const day = new Date().getDay();
+        if (day === 5) {
+            await send(`*Viernes de Compartir Valor* 🫶
+En Comunidad GH crecemos juntos 
+
+_Anímate a compartir aquello que ha nutrido tu semana_ 🦅
+
+⁠Pueden ser links 🔗, lecturas 📚, recetas 🥗, hacks!! 🔥`);
+        }
+    });
+
+    // 🔔 Viernes - Aviso Rutina FDS - 9:00 PM
+    cron.schedule('00 21 * * *', async () => {
+        const day = new Date().getDay();
+        if (day === 5) {
+            await send(`✨Feliz Fin de Semana!!✨
 *Nos vemos Sábados y Domingos* 
 (Sin Registro)
 
-🌞 Único Horario FDS: 8:00 AM 
-🌎 Zona horaria: GMT-5 🇨🇴 
-👉 Link AM: https://shorturl.at/sBq88`;
-        await sendGroupMessage("América | Gimnasio de Hábitos", message);
-        tareasYaIniciadas = true;
-    }, { timezone: 'America/Bogota' });
-
-    // 🧘‍♂️ Rutina FDS (sábado y domingo)
-    cron.schedule('45 07 * * *', async () => {
-        const day = getDayInTimeZone('America/Bogota');
-        if (day === 6 || day === 0) {
-            const message = `*GH Rutina AM | FDS | Sin Registro*
-🌞 Zoom (35'm)
-👉 Link AM: https://shorturl.at/sBq88
-
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠  ⁠8:00 AM
-
-⏳Sala de espera → 5’ min. antes
-⏱️ ¡Inicio puntual! :00`;
-            await sendGroupMessage("América | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
+🌞 4-5-6-7-8-9-10 AM
+🌎 En Tu Zona Horaria 👀
+👉 ZOOM: https://shorturl.at/drCBU
+👉 ID: 282 437 3527`);
         }
-    }, { timezone: 'America/Bogota' });
+    });
 
-    // ☀️ Recordatorio domingo noche
+    // 🌞 FDS - Invitación diaria - 3:45 AM
+    cron.schedule('45 03 * * *', async () => {
+        const day = new Date().getDay();
+        if (day === 6 || day === 0) {
+            await send(`*GH Rutina AM | FDS | Sin Registro*
+🌞 ZOOM (35'm)
+👉 https://shorturl.at/drCBU
+👉 ID: 282 437 3527
+👨‍💻 Activa y enfoca tu cámara
+🙏 Zoom User: Nombre Apellido
+
+🌎 *GH | 24h* 👀 
+•⁠ 4-5-6-7-8-9… 24h
+
+⏱️ ¡Inicio puntual! :00 
+⏳Sala de Bienvenida → 5’ min. antes
+👋 _Recuerda Saludar y Despedirte en cada sesión_`);
+        }
+    });
+
+    // 📢 Domingo - Confirmación semanal - 7:00 PM
     cron.schedule('00 19 * * 0', async () => {
-        const message = `✨Feliz noche de Domingo✨
+        await send(`✨Feliz noche de Domingo✨
 👁️ *Nos vemos mañana Lunes* 🌅
 
-🌎 Zona horaria: GMT-5 🇨🇴 
-•⁠ 5 - 6 - 7 - 8 - 9 AM 
+🌎 *GH | 24h* 👀 
+•⁠ 4-5-6-7-8-9… 24h
 
-⏳ Sala de espera → 5’ min. antes⏱️ Iniciamos puntual! ❤️📈`;
+⏱️ Iniciamos puntual! :00 ❤️📈
+⏳ Sala de espera → 5’ min. Antes`);
+    });
 
-        await sendGroupMessage("América | Gimnasio de Hábitos", message);
-        tareasYaIniciadas = true;
-    }, { timezone: 'America/Bogota' });
-
-    cron.schedule('01 19 * * 0', async () => {
-        const message = `👩‍💻Recuerda poner en tus configuraciones de *Usuario en Zoom, tu Nombre y Apellido para llevar tu registro.* 
+    // ✅ Domingo - Recordatorio de nombre en Zoom - 7:30 PM
+    cron.schedule('30 19 * * 0', async () => {
+        await send(`👩‍💻Recuerda poner en tus configuraciones de *Usuario en Zoom, tu Nombre y Apellido para llevar tu registro.* 
 👉 https://zoom.us/profile 
 
-☑️ Aviso de Inasistencia 👀
-🥶(conserva tu racha) 🔥
-👉 https://whatsform.com/O-72jC`;
-        await sendGroupMessage("América | Gimnasio de Hábitos", message);
-        tareasYaIniciadas = true;
-    }, { timezone: 'America/Bogota' });
-
-    ///////////////////////// EUROPA /////////////////////////
-    cron.schedule('45 07 * * *', async () => {
-        const day = getDayInTimeZone('Europe/Madrid');
-        if (day >= 1 && day <= 5) {
-            const message = `Es la hora del automata 
-*GH Rutina AM | Lunes a Viernes*
-🌞 Zoom (35'm)
-👉 Link AM: https://shorturl.at/sBq88 
-
-🌎 Zona horaria: GMT+2 🇪🇸 
-•⁠  ⁠8:00 AM 
-
-⏳Sala de Bienvenida → 5’ min. antes
-⏱️ ¡Inicio puntual! :00 
-🫶 _Recuerda Saludar y Despedirte en Cada Sesión_ 👋`;
-            await sendGroupMessage("Europa | Gimnasio de Hábitos", message);
-            tareasYaIniciadas = true;
-        }
-    }, { timezone: 'Europe/Madrid' });
-});
-
-client.on('disconnected', (reason) => {
-    console.log(`❌ Cliente desconectado: ${reason}`);
-    client.destroy().then(() => client.initialize());
+👩‍💻No olvides *prender tu cámara y enfocarla* para facilitar tu registro, aumentar tu compromiso y participación.`);
+    });
 });
 
 client.initialize();
+
